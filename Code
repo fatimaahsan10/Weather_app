@@ -1,0 +1,24 @@
+import requests
+
+API_KEY = "44c7ff0e31fe4db5104551f9263992c1"
+BASE_URL = "http://api.openweathermap.org/data/2.5/weather?"
+
+city = input("Enter city name: ")
+
+url = BASE_URL + "q=" + city + "&appid=" + API_KEY + "&units=metric"
+response = requests.get(url)
+data = response.json()
+
+#print(data)  # Debugging: see the whole response first
+
+# Check if request was successful
+if data.get("cod") == 200:   # 200 = success
+    main = data["main"]
+    weather = data["weather"][0]
+
+    print(f"\n City: {city}")
+    print(f"Temperature: {main['temp']} °C")
+    print(f" Humidity: {main['humidity']} %")
+    print(f" Condition: {weather['description'].capitalize()}")
+else:
+    print(f" Error: {data.get('message', 'Something went wrong.')}")
